@@ -22,18 +22,24 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
-    } 
-    else {
+    const existingPerson = persons.find(person => person.name === newName)
+    if (existingPerson) {
+      if (window.confirm(`Henkilö ${existingPerson.name} on jo lisätty yhteystietoihin, päivitetäänkö puhelinnumero?`)) {
+        personService
+          .update(existingPerson.id, personObject)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson))
+          })
+      }
+    } else {
       personService
         .create(personObject)
-        .then(returnedNote => {
-          setPersons(persons.concat(returnedNote))
-          setNewName('')
-          setNewNumber('')
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
         })
     }
+    setNewName('')
+    setNewNumber('')
   }
 
   const deletePerson = person => {
