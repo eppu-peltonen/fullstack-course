@@ -36,6 +36,16 @@ const App = () => {
     }
   }
 
+  const deletePerson = person => {
+    if (window.confirm(`Haluatko poistaa henkilön ${person.name} yhteystiedoista?`)) {
+      personService
+      .deletePerson(person)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== person.id))
+      })
+    }
+  }
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -62,7 +72,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} filterPersons={filterPersons} />  
+      <Persons persons={persons} filterPersons={filterPersons} deletePerson={deletePerson} />  
     </div>
   )
 }

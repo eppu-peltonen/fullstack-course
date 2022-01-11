@@ -1,14 +1,19 @@
 import React from 'react'
 
-const Persons = ({persons, filterPersons}) => {
+const Persons = ({persons, filterPersons, deletePerson}) => {
   const personsToShow = filterPersons
   ? persons.filter(person => person.name.toLowerCase().indexOf(filterPersons.toLowerCase()) > -1)
   : persons
 
   return (
     <div>
-      {personsToShow.map(person => <div key={person.name}> {person.name} {person.number}</div>)}  
-    </div>  
+      {personsToShow.map(person =>
+        <div key={person.id}>
+          {person.name}
+          {person.number}
+          <button onClick={() => deletePerson(person)}>poista</button>
+        </div>)}
+    </div>
   )
 }
 
