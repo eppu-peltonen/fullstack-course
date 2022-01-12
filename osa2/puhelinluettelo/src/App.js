@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Persons, Filter, PersonForm } from './components/Person'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterPersons, setFilterPersons] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -16,12 +18,20 @@ const App = () => {
       })
   }, [])
 
+  const sendMessage = (message) => {
+    setMessage(message)
+      setTimeout(() => {
+        setMessage(null)
+      }, 3000)
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
       number: newNumber
     }
+    console.log(personObject)
     const existingPerson = persons.find(person => person.name === newName)
     if (existingPerson) {
       if (window.confirm(`Henkilö ${existingPerson.name} on jo lisätty yhteystietoihin, päivitetäänkö puhelinnumero?`)) {
@@ -29,6 +39,7 @@ const App = () => {
           .update(existingPerson.id, personObject)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson))
+            sendMessage(`Henkilön ${personObject.name} numero muutettu`)
           })
       }
     } else {
@@ -36,7 +47,9 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          sendMessage(`${personObject.name} lisätty`)
         })
+      
     }
     setNewName('')
     setNewNumber('')
@@ -48,6 +61,7 @@ const App = () => {
       .deletePerson(person)
       .then(() => {
         setPersons(persons.filter(p => p.id !== person.id))
+        sendMessage(`${person.name} poistettu`)
       })
     }
   }
@@ -68,6 +82,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message}/>
       <Filter filterPersons={filterPersons} handleFilterChange={handleFilterChange} />
       <h3>add a new</h3>
       <PersonForm
