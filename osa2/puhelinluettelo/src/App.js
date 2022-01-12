@@ -41,6 +41,9 @@ const App = () => {
             setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson))
             sendMessage(`Henkilön ${personObject.name} numero muutettu`)
           })
+          .catch(error => {
+            sendMessage(`${personObject.name} on jo poistettu yhteystiedoista`)
+          })
       }
     } else {
       personService
