@@ -19,6 +19,7 @@ const App = () => {
   }, [])
 
   const sendMessage = (message) => {
+    console.log(message)
     setMessage(message)
       setTimeout(() => {
         setMessage(null)
@@ -50,7 +51,11 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
-          sendMessage(`${personObject.name} lisätty`)
+          sendMessage(`${returnedPerson.name} lisätty`)
+        })
+        .catch(error => {
+          console.log(error.response.data.error)
+          sendMessage(error.response.data.error)
         })
       
     }
