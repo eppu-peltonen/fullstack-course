@@ -1,15 +1,32 @@
 const totalLikes = (blogs) => {
-  const likes = blogs.map(x => x.likes)
-  if (likes.length === 0) {
-    return 0
-  }  else {
-    const totalLikes = likes.reduce((sum, like) => {
-      return sum + like
-    })
-    return totalLikes
+  const reducer = (sum, item) => sum + item.likes
+  return blogs.reduce(reducer, 0)
+}
+
+const favoriteBlog = (blogs) => {
+  if (blogs.length === 0) {
+    return undefined
   }
+
+  const reducer = (previous, current) => {
+    if (previous.likes > current.likes) {
+      return previous
+    } else {
+      return current
+    }
+  }
+  const result = blogs.reduce(reducer)
+
+  const returnBlog = {
+    title: result.title,
+    author: result.author,
+    likes: result.likes
+  }
+
+  return returnBlog
 }
 
 module.exports = {
-  totalLikes
+  totalLikes,
+  favoriteBlog
 }
