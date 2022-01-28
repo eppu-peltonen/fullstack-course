@@ -20,6 +20,7 @@ const favoriteBlog = (blogs) => {
   const returnBlog = {
     title: result.title,
     author: result.author,
+    url: result.url,
     likes: result.likes
   }
 
