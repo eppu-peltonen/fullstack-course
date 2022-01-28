@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/61eea3b23bd58eb5b21c2b2c
+content-type: application/json
+
+{
+  "title": "muokattu otsikko",
+  "author": "muokattu kirjailija",
+  "url": "muokattu url",
+  "likes": 4
+}
