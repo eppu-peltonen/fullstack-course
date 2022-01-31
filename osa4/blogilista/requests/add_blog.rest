@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVwcHUiLCJpZCI6IjYxZjc5ZjU2N2VkZTg1ZTIwMjk0OTM3OCIsImlhdCI6MTY0MzYyMjE1M30.DzBQI-RsLWIkVpE9d-crDW2fLtnfkdv3LqZSnqW3ArA
 
 {
-  "title": "blogi jossa on käyttäjä",
+  "title": "tokenextractor",
   "author": "kirjoittaja2",
   "url": "tämä_on_url2",
-  "likes": 1,
-  "userId": "61f79f567ede85e202949378"
+  "likes": 1
 }
