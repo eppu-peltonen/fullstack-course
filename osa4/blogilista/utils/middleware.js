@@ -14,5 +14,5 @@ const unknownEndpoint = (req, res) => {
 
 module.exports = {
   requestLogger,
-  unknownEndpoint
+  unknownEndpoint,
 }
