@@ -27,6 +27,10 @@ blogsRouter.post('/', async (req, res) => {
       user: user._id
     })
 
+    if (!blog.likes) {
+      blog.likes = 0
+    }
+
     if (blog.title === undefined) {
       return res.status(400).json({error: 'title missing'})
     } else if (blog.url === undefined) {
