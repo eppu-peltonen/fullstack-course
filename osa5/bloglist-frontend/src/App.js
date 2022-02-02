@@ -6,7 +6,7 @@ import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -30,6 +30,13 @@ const App = () => {
     }
   }, [])
 
+  const sendMessage = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -44,10 +51,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch(exception) {
-      setErrorMessage('wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      sendMessage('wrong credentials')
     }
   }
 
@@ -93,6 +97,8 @@ const App = () => {
     }
     const returnedBlog = await blogService.create(blogObject)
     setBlogs(blogs.concat(returnedBlog))
+
+    sendMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
     setNewTitle('')
     setNewAuthor('')
     setNewUrl('')
@@ -145,7 +151,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage} />
+      <Notification message={message} />
       {
         user === null ?
         loginForm() :
