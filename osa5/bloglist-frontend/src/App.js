@@ -3,6 +3,9 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -10,10 +13,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  
-  const [newTitle, setNewTitle] = useState('')
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newUrl, setNewUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -61,83 +60,30 @@ const App = () => {
     setUser(null)
   }
 
-  const loginForm = () => (
-    <div>
-      <h2>log in to application</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-            <input
-              type="text"
-              value={username}
-              name="username"
-              onChange={({target}) => setUsername(target.value)}
-            />
-        </div>
-        <div>
-          password
-            <input
-              type="password"
-              value={password}
-              name="password"
-              onChange={({target}) => setPassword(target.value)}
-            />
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
-  )
+  const loginForm = () => {
+    return(
+      <Togglable buttonLabel='login'>
+        <LoginForm
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+        />
+      </Togglable>
+    )
+  }
 
-  const addBlog = async (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl
-    }
+  const addBlog = async (blogObject) => {
     const returnedBlog = await blogService.create(blogObject)
     setBlogs(blogs.concat(returnedBlog))
-
     sendMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
-    setNewTitle('')
-    setNewAuthor('')
-    setNewUrl('')
   }
 
   const blogForm = () => (
-    <div>
-      <h2>create new</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          title:
-            <input
-              type="text"
-              value={newTitle}
-              name="title"
-              onChange={({target}) => setNewTitle(target.value)}
-            />
-        </div>
-        <div>
-        author:
-            <input
-              type="text"
-              value={newAuthor}
-              name="author"
-              onChange={({target}) => setNewAuthor(target.value)}
-            />
-        </div>
-        <div>
-          url:
-          <input
-            type="text"
-            value={newUrl}
-            name="url"
-            onChange={({target}) => setNewUrl(target.value)}
-            />
-        </div>
-        <button type="submit">create</button>
-      </form>
-    </div>
+    <Togglable buttonLabel='add new blog'>
+      <BlogForm createBlog={addBlog} />
+    </Togglable>
   )
 
   const blogList = () => (
