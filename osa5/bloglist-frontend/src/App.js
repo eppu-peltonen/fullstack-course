@@ -17,7 +17,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const App = () => {
 
   const handleLogout = (event) => {
     event.preventDefault()
-    localStorage.removeItem('loggedBloglistUser');
+    localStorage.removeItem('loggedBloglistUser')
     setUser(null)
   }
 
@@ -100,13 +100,13 @@ const App = () => {
       <Notification message={message} />
       {
         user === null ?
-        loginForm() :
-        <div>
-          <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>logout</button>
-          {blogForm()}
-          {blogList()}
-        </div>
+          loginForm() :
+          <div>
+            <p>{user.name} logged in</p>
+            <button onClick={handleLogout}>logout</button>
+            {blogForm()}
+            {blogList()}
+          </div>
       }
     </div>
   )
